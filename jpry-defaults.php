@@ -35,14 +35,14 @@ class Option_Defaults {
  	/**
  	 * The current instance of this class.
  	 *
- 	 * @var JPry\Option_Defaults
+ 	 * @var \JPry\Option_Defaults
  	 */
  	private static $instance = null;
 
  	/**
  	 * Get the single instance of this class.
  	 *
- 	 * @return JPry\Option_Defaults The instance of this class.
+ 	 * @return \JPry\Option_Defaults The instance of this class.
  	 */
  	public static function get_instance() {
  		if ( null === static::$instance ) {
@@ -126,3 +126,5 @@ class Option_Defaults {
  		return 'America/New_York';
  	}
 }
+
+Option_Defaults::get_instance();
