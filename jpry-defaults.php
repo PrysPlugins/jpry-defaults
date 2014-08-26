@@ -55,7 +55,7 @@ class Option_Defaults {
  	/**
  	 * Constructor. Not much here.
  	 */
- 	private __construct() {
+ 	private function __construct() {
  		// Do nothing.
  	}
 
