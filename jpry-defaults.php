@@ -3,7 +3,7 @@
  * Plugin Name:		JPry Defaults
  * Plugin URI:		https://github.com/PrysPlugins/jpry-defaults
  * Description:		Default settings for new JPry sites.
- * Version:		1.0.0
+ * Version:		1.0.1
  * Author:		Jeremy Pry
  * Author URL		http://jeremypry.com/
  * License:		GPL2
