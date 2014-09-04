@@ -127,4 +127,4 @@ class Option_Defaults {
  	}
 }
 
-Option_Defaults::get_instance();
+Option_Defaults::get_instance()->setup_hooks();
