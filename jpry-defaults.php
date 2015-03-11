@@ -3,7 +3,7 @@
  * Plugin Name:		JPry Defaults
  * Plugin URI:		https://github.com/PrysPlugins/jpry-defaults
  * Description:		Default settings for new JPry sites.
- * Version:		1.0.1
+ * Version:		1.1
  * Author:		Jeremy Pry
  * Author URL		http://jeremypry.com/
  * License:		GPL2
@@ -63,7 +63,6 @@ class Option_Defaults {
 	 * Add our class methods to the appropriate WordPress hooks.
 	 */
  	public function setup_hooks() {
- 		add_filter( 'pre_option_blog_public',                   '__return_zero' );
  		add_filter( 'pre_option_start_of_week',                 '__return_zero' );
  		add_filter( 'pre_option_uploads_use_yearmonth_folders', '__return_false' );
  		add_filter( 'pre_option_users_can_register',            '__return_zero' );
