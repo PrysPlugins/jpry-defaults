@@ -1,129 +1,64 @@
 <?php
 /**
- * Plugin Name:		JPry Defaults
- * Plugin URI:		https://github.com/PrysPlugins/jpry-defaults
- * Description:		Default settings for new JPry sites.
- * Version:		1.1
- * Author:		Jeremy Pry
- * Author URL		http://jeremypry.com/
- * License:		GPL2
- * GitHub Plugin URI:	https://github.com/PrysPlugins/jpry-defaults
- * GitHub Branch	master
+ * Plugin Name:       JPry Defaults
+ * Plugin URI:        https://github.com/PrysPlugins/jpry-defaults
+ * Description:       Default settings for new JPry sites.
+ * Version:           1.2.0
+ * Author:            Jeremy Pry
+ * Author URL         https://jeremypry.com/
+ * License:           GPL2
+ * GitHub Plugin URI: https://github.com/PrysPlugins/jpry-defaults
+ * GitHub Branch:     master
  */
- 
- namespace JPry;
+
+namespace JPry;
 
 // Prevent direct access to this file
-if ( ! defined( '\ABSPATH' ) ) {
-	die( "You can't do anything by accessing this file directly." );
+defined( 'ABSPATH' ) || die();
+
+/**
+ * @return object
+ */
+function defaults(): object {
+	static $class = null;
+	if ( null !== $class ) {
+		return $class;
+	}
+
+	return $class = new class() {
+
+		/**
+		 * Array of options that we're modifying.
+		 *
+		 * @var array
+		 */
+		private array $options = [
+			'date_format'            => 'F j, Y',
+			'default_comment_status' => 'closed',
+			'default_ping_status'    => 'closed',
+			'permalink_structure'    => '/%postname%/',
+			'time_format'            => 'H:i',
+			'timezone_string'        => 'America/New_York',
+		];
+
+		/**
+		 * Add our class methods to the appropriate WordPress hooks.
+		 */
+		public function setup_hooks() {
+			add_filter( 'pre_option_start_of_week', '__return_zero' );
+			add_filter( 'pre_option_uploads_use_yearmonth_folders', '__return_false' );
+			add_filter( 'pre_option_users_can_register', '__return_zero' );
+
+			foreach ( $this->options as $option => $value ) {
+				add_filter(
+					"pre_option_{$option}",
+					function() use ( $value ) {
+						return $value;
+					}
+				);
+			}
+		}
+	};
 }
 
-class Option_Defaults {
-
-	/**
-	 * Array of options that we're modifying.
-	 *
-	 * @var array
-	 */
-	private $options = array(
-	 	'date_format',
-	 	'permalink_structure',
-	 	'time_format',
-	 	'timezone_string',
- 	);
-
- 	/**
- 	 * The current instance of this class.
- 	 *
- 	 * @var \JPry\Option_Defaults
- 	 */
- 	private static $instance = null;
-
- 	/**
- 	 * Get the single instance of this class.
- 	 *
- 	 * @return \JPry\Option_Defaults The instance of this class.
- 	 */
- 	public static function get_instance() {
- 		if ( null === static::$instance ) {
- 			static::$instance = new static();
- 		}
-
- 		return static::$instance;
- 	}
-
- 	/**
- 	 * Constructor. Not much here.
- 	 */
- 	private function __construct() {
- 		// Do nothing.
- 	}
-
-	/**
-	 * Add our class methods to the appropriate WordPress hooks.
-	 */
- 	public function setup_hooks() {
- 		add_filter( 'pre_option_start_of_week',                 '__return_zero' );
- 		add_filter( 'pre_option_uploads_use_yearmonth_folders', '__return_false' );
- 		add_filter( 'pre_option_users_can_register',            '__return_zero' );
-
- 		add_filter( 'pre_option_default_comment_status', array( $this, 'closed' ) );
- 		add_filter( 'pre_option_default_ping_status',    array( $this, 'closed' ) );
-
- 		foreach ( $this->options as $option ) {
- 			add_filter( 'pre_option_' . $option, array( $this, $option ), 10, 1 );
- 		}
- 	}
-
- 	/**
- 	 * Mark post comments and pings closed.
- 	 *
- 	 * @param string $value The current value.
- 	 * @return string The filtered value: "closed".
- 	 */
- 	public function closed( $value ) {
- 		return 'closed';
- 	}
-
- 	/**
- 	 * Set the date format for the site.
- 	 *
- 	 * @param string $value The current value.
- 	 * @return string The filtered value.
- 	 */
- 	public function date_format( $value ) {
- 		return 'F j, Y';
- 	}
-
- 	/**
- 	 * Set the permalink structure for the site.
- 	 *
- 	 * @param string $value The default value.
- 	 * @return string The filtered value.
- 	 */
- 	public function permalink_structure( $value ) {
- 		return '/%postname%/';
- 	}
-
- 	/**
- 	 * Set the time format for the site.
- 	 *
- 	 * @param string $value The current value.
- 	 * @return string The filtered value.
- 	 */
- 	public function time_format( $value ) {
- 		return 'H:i';
- 	}
-
- 	/**
- 	 * Set the time zone for the site.
- 	 *
- 	 * @param string $value The current value.
- 	 * @return string The filtered value.
- 	 */
- 	public function timezone_string( $value ) {
- 		return 'America/New_York';
- 	}
-}
-
-Option_Defaults::get_instance()->setup_hooks();
+defaults()->setup_hooks();
